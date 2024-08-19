@@ -10,6 +10,6 @@ public class HelloAll {
 
     @GetMapping
     public String getHelloAll() {
-        return "index";
+        return "ReactExample";
     }
 }

@@ -4,18 +4,16 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
-        bundle: './src/main/js/components/index.js',
+        react: './src/main/js/components/index.jsx',
     }, // Entry point for React components
     output: {
-        path: path.resolve(__dirname, 'src/main/resources/templates'), // Output directory for build files
-        filename: '[name].js', // Output file name without content hash
-        chunkFilename: '[name].js', // Chunk file names without content hash
-        publicPath: '/' // Base URL for the application
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'src/main/resources/static'),
     },
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,  // Matches both .js and .jsx files
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
@@ -26,13 +24,19 @@ module.exports = {
             },
         ],
     },
+    resolve: {
+        extensions: ['.js', '.jsx'],
+        modules: ['node_modules'],
+    },
     plugins: [
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ['**/*'],
         }),
         new HtmlWebpackPlugin({
-            template: './src/main/js/components/index.html', // Template file for HTML
-            filename: 'index.html', // Output file name in the templates directory
+            template: './src/main/js/components/ReactExample.html', // Template file for HTML
+            inject: "body",
+            filename: `${__dirname}/src/main/resources/templates/ReactExample.html`, // Output file name in the templates directory
+            chunks: ["react"]
         })
     ],
     optimization: {
