@@ -62,6 +62,12 @@ public class StudentService {
     }
 
     public Student saveStudent(Student student) {
+        Student exists = studentRepository.findByEmail(student.getEmail());
+        if (exists != null) {
+            // Return null if the email already exists (to prevent duplicate entries)
+            return null;
+        }
+        // Save the new student since the email does not exist
         return studentRepository.save(student);
     }
 

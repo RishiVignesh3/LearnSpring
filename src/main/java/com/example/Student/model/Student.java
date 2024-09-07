@@ -18,6 +18,9 @@ public class Student {
     private String name;
     private int age;
     private String email;
+    private String password;
+    @Lob
+    private byte[] image;
     @Column(name = "company_id", insertable = false, updatable = false)
     private Long companyId;
 
@@ -27,12 +30,14 @@ public class Student {
 
     public Student() {};
 
-    public Student(String name, int age, String email, Long companyId, Company company) {
+    public Student(String name, int age, String email, Long companyId, Company company, String password, byte[] image) {
         this.name = name;
         this.age = age;
         this.email = email;
         this.companyId = companyId;
         this.company = company;
+        this.password = password;
+        this.image = image;
     }
 
     public String getName(){
@@ -47,6 +52,10 @@ public class Student {
         return email;
     }
 
+    public String getPassword(){
+        return password;
+    }
+
     public int getAge(){
         return age;
     }
@@ -59,7 +68,13 @@ public class Student {
         return company;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
 
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 
     public void setAge(int age) {
         this.age = age;
@@ -75,6 +90,10 @@ public class Student {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setCompanyId(Long companyId) {

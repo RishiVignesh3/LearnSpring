@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
     public List<Student> findAllByCompanyId(Long companyId);
+
+    public Student findByEmail(String email);
 }

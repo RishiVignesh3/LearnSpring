@@ -1,8 +1,8 @@
 package com.example.Student.controller;
 
 import com.example.Student.dto.LinkCompanyRequest;
+import com.example.Student.dto.StudentDTO;
 import com.example.Student.dto.StudentWithCompanyResponse;
-import com.example.Student.model.Company;
 import com.example.Student.model.Student;
 import com.example.Student.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
 @RequestMapping("/students")
+@CrossOrigin(origins = "*")
 public class StudentController {
 
     @Autowired
@@ -70,11 +73,28 @@ public class StudentController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<Object> createStudent(@ModelAttribute StudentDTO studentDTO) throws IOException {
+        // Check if file is null
+        MultipartFile file = studentDTO.getImage();
+        if (file == null) {
+            return new ResponseEntity<>("No file uploaded", HttpStatus.BAD_REQUEST);
+        }
+
+        Student student = new Student();
+        student.setName(studentDTO.getName());
+        student.setEmail(studentDTO.getEmail());
+        student.setCompanyId(studentDTO.getCompanyId());
+        student.setAge(studentDTO.getAge());
+        student.setPassword(studentDTO.getPassword());
+
+        student.setImage(file.getBytes()); // Save the file
+
         Student savedStudent = studentService.saveStudent(student);
+
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
+
 
     @PatchMapping("/{studentId}/linkCompany")
     public ResponseEntity<Student> modifyStudent(
