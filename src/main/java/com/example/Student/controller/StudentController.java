@@ -5,6 +5,7 @@ import com.example.Student.dto.StudentDTO;
 import com.example.Student.dto.StudentWithCompanyResponse;
 import com.example.Student.model.Student;
 import com.example.Student.service.StudentService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,11 +83,7 @@ public class StudentController {
         }
 
         Student student = new Student();
-        student.setName(studentDTO.getName());
-        student.setEmail(studentDTO.getEmail());
-        student.setCompanyId(studentDTO.getCompanyId());
-        student.setAge(studentDTO.getAge());
-        student.setPassword(studentDTO.getPassword());
+        BeanUtils.copyProperties(studentDTO, student);
 
         student.setImage(file.getBytes()); // Save the file
 
